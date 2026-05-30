@@ -847,7 +847,6 @@ mod tests {
     use super::*;
 
     #[test]
-    #[test]
     fn test_intention_new() {
         let intention = Intention::new("build a bridge", IntentionOrigin::Human("Alice".into()), 0.8, 1);
         assert_eq!(intention.goal, "build a bridge");
@@ -859,7 +858,6 @@ mod tests {
     }
 
     #[test]
-    #[test]
     fn test_intention_priority_clamped() {
         let too_high = Intention::new("test", IntentionOrigin::System, 1.5, 0);
         assert_eq!(too_high.priority, 1.0);
@@ -867,7 +865,6 @@ mod tests {
         assert_eq!(too_low.priority, 0.0);
     }
 
-    #[test]
     #[test]
     fn test_intention_require_and_allocate() {
         let mut intention = Intention::new("cook dinner", IntentionOrigin::Human("Bob".into()), 0.6, 2);
@@ -879,7 +876,6 @@ mod tests {
     }
 
     #[test]
-    #[test]
     fn test_intention_require_dedup() {
         let mut intention = Intention::new("test", IntentionOrigin::System, 0.5, 0);
         intention.require("analyze");
@@ -887,7 +883,6 @@ mod tests {
         assert_eq!(intention.required_capabilities.len(), 1);
     }
 
-    #[test]
     #[test]
     fn test_intention_ready() {
         let mut intention = Intention::new("test", IntentionOrigin::System, 0.5, 0);
@@ -901,7 +896,6 @@ mod tests {
     }
 
     #[test]
-    #[test]
     fn test_intention_lifecycle() {
         let mut intention = Intention::new("test", IntentionOrigin::System, 0.5, 0);
         intention.require("verify");
@@ -914,14 +908,12 @@ mod tests {
     }
 
     #[test]
-    #[test]
     fn test_intention_fail() {
         let mut intention = Intention::new("test", IntentionOrigin::System, 0.5, 0);
         intention.fail();
         assert!(matches!(intention.status, IntentionStatus::Failed));
     }
 
-    #[test]
     #[test]
     fn test_intention_transform() {
         let mut intention = Intention::new("old goal", IntentionOrigin::System, 0.5, 0);
@@ -936,7 +928,6 @@ mod tests {
     }
 
     #[test]
-    #[test]
     fn test_intention_origin_display() {
         assert_eq!(IntentionOrigin::Human("Alice".into()).to_string(), "Human(Alice)");
         assert_eq!(IntentionOrigin::Agent("Bot".into()).to_string(), "Agent(Bot)");
@@ -944,7 +935,6 @@ mod tests {
         assert_eq!(IntentionOrigin::Emergent("chaos".into()).to_string(), "Emergent(chaos)");
     }
 
-    #[test]
     #[test]
     fn test_intention_id_newtype() {
         let id1 = IntentionId::new("abc");
@@ -957,7 +947,6 @@ mod tests {
     }
 
     #[test]
-    #[test]
     fn test_graph_register() {
         let mut graph = IntentionGraph::new(100.0);
         let intention = Intention::new("test", IntentionOrigin::System, 0.5, 0);
@@ -967,14 +956,12 @@ mod tests {
     }
 
     #[test]
-    #[test]
     fn test_graph_default() {
         let graph = IntentionGraph::default();
         assert_eq!(graph.conservation_pool, 1000.0);
         assert!(graph.intentions.is_empty());
     }
 
-    #[test]
     #[test]
     fn test_graph_depends_on() {
         let mut graph = IntentionGraph::new(100.0);
@@ -986,7 +973,6 @@ mod tests {
     }
 
     #[test]
-    #[test]
     fn test_graph_allocate_energy_within_budget() {
         let mut graph = IntentionGraph::new(100.0);
         let id = graph.register(Intention::new("test", IntentionOrigin::System, 0.5, 0));
@@ -995,14 +981,12 @@ mod tests {
     }
 
     #[test]
-    #[test]
     fn test_graph_allocate_energy_exceeds_budget() {
         let mut graph = IntentionGraph::new(100.0);
         let id = graph.register(Intention::new("test", IntentionOrigin::System, 0.5, 0));
         assert!(!graph.allocate_energy(&id, 200.0));
     }
 
-    #[test]
     #[test]
     fn test_graph_is_conserved() {
         let mut graph = IntentionGraph::new(100.0);
@@ -1013,7 +997,6 @@ mod tests {
         assert!(graph.is_conserved());
     }
 
-    #[test]
     #[test]
     fn test_graph_execute_requires_deps() {
         let mut graph = IntentionGraph::new(100.0);
@@ -1035,7 +1018,6 @@ mod tests {
     }
 
     #[test]
-    #[test]
     fn test_graph_execute_fails_unsatisfied_dep() {
         let mut graph = IntentionGraph::new(100.0);
         let a_id = graph.register(Intention::new("A", IntentionOrigin::System, 0.5, 0));
@@ -1049,14 +1031,12 @@ mod tests {
     }
 
     #[test]
-    #[test]
     fn test_graph_execute_fails_no_budget() {
         let mut graph = IntentionGraph::new(100.0);
         let id = graph.register(Intention::new("test", IntentionOrigin::System, 0.5, 0));
         assert!(graph.execute(&id).is_err());
     }
 
-    #[test]
     #[test]
     fn test_graph_energy_flow() {
         let mut graph = IntentionGraph::new(100.0);
@@ -1071,7 +1051,6 @@ mod tests {
     }
 
     #[test]
-    #[test]
     fn test_graph_frontier() {
         let mut graph = IntentionGraph::new(100.0);
         let id = graph.register(Intention::new("test", IntentionOrigin::System, 0.5, 0));
@@ -1082,7 +1061,6 @@ mod tests {
         assert_eq!(graph.frontier().len(), 1);
     }
 
-    #[test]
     #[test]
     fn test_graph_top_intentions() {
         let mut graph = IntentionGraph::new(100.0);
@@ -1095,7 +1073,6 @@ mod tests {
         assert_eq!(top2[1].goal, "mid");
     }
 
-    #[test]
     #[test]
     fn test_graph_bottlenecks() {
         let mut graph = IntentionGraph::new(100.0);
@@ -1119,7 +1096,6 @@ mod tests2 {
     use super::*;
 
     #[test]
-    #[test]
     fn test_graph_execute_ready() {
         let mut graph = IntentionGraph::new(100.0);
         let id = graph.register(Intention::new("test", IntentionOrigin::System, 0.5, 0));
@@ -1132,7 +1108,6 @@ mod tests2 {
         assert!(matches!(graph.intentions[&id].status, IntentionStatus::Executing));
     }
 
-    #[test]
     #[test]
     fn test_graph_propagate() {
         let mut graph = IntentionGraph::new(100.0);
@@ -1157,7 +1132,6 @@ mod tests2 {
     }
 
     #[test]
-    #[test]
     fn test_graph_summary() {
         let mut graph = IntentionGraph::new(100.0);
         graph.register(Intention::new("a", IntentionOrigin::System, 0.5, 0));
@@ -1166,7 +1140,6 @@ mod tests2 {
         assert!(summary.contains("intentions=1"));
     }
 
-    #[test]
     #[test]
     fn test_soul_signature_default() {
         let sig = SoulSignature::default();
@@ -1177,7 +1150,6 @@ mod tests2 {
     }
 
     #[test]
-    #[test]
     fn test_soul_signature_clamp() {
         let sig = SoulSignature::new(-1.0, 2.0, 0.5, 1.5);
         assert!((sig.patience - 0.0).abs() < 1e-9);
@@ -1186,7 +1158,6 @@ mod tests2 {
         assert!((sig.conservation_affinity - 1.0).abs() < 1e-9);
     }
 
-    #[test]
     #[test]
     fn test_agent_module_new() {
         let agent = AgentModule::new("Builder", vec!["place".to_string(), "design".to_string()], 100.0);
@@ -1197,7 +1168,6 @@ mod tests2 {
     }
 
     #[test]
-    #[test]
     fn test_agent_can_execute() {
         let agent = AgentModule::new("Scholar", vec!["analyze".to_string(), "compute".to_string()], 80.0);
         let mut intention = Intention::new("analyze data", IntentionOrigin::System, 0.5, 0);
@@ -1206,7 +1176,6 @@ mod tests2 {
         assert!(agent.can_execute(&intention));
     }
 
-    #[test]
     #[test]
     fn test_agent_cannot_execute_missing_capability() {
         let agent = AgentModule::new("Scholar", vec!["analyze".to_string()], 80.0);
@@ -1217,7 +1186,6 @@ mod tests2 {
     }
 
     #[test]
-    #[test]
     fn test_agent_cannot_execute_exhausted() {
         let mut agent = AgentModule::new("Builder", vec!["construct".to_string()], 10.0);
         agent.energy_used = 10.0;
@@ -1227,7 +1195,6 @@ mod tests2 {
         assert!(!agent.can_execute(&intention));
     }
 
-    #[test]
     #[test]
     fn test_agent_execute() {
         let mut agent = AgentModule::new("Scholar", vec!["analyze".to_string()], 80.0);
@@ -1242,7 +1209,6 @@ mod tests2 {
     }
 
     #[test]
-    #[test]
     fn test_agent_execute_failure() {
         let mut agent = AgentModule::new("Builder", vec!["construct".to_string()], 10.0);
         let mut intention = Intention::new("analyze", IntentionOrigin::System, 0.5, 0);
@@ -1254,7 +1220,6 @@ mod tests2 {
     }
 
     #[test]
-    #[test]
     fn test_agent_rest() {
         let mut agent = AgentModule::new("Test", vec!["analyze".to_string()], 100.0);
         agent.energy_used = 50.0;
@@ -1265,7 +1230,6 @@ mod tests2 {
     }
 
     #[test]
-    #[test]
     fn test_agent_learn_capability() {
         let mut agent = AgentModule::new("Test", vec![], 100.0);
         agent.learn_capability("analyze");
@@ -1275,7 +1239,6 @@ mod tests2 {
     }
 
     #[test]
-    #[test]
     fn test_agent_exhausted() {
         let mut agent = AgentModule::new("Test", vec!["analyze".to_string()], 50.0);
         assert!(!agent.is_exhausted());
@@ -1283,7 +1246,6 @@ mod tests2 {
         assert!(agent.is_exhausted());
     }
 
-    #[test]
     #[test]
     fn test_agent_utilization() {
         let mut agent = AgentModule::new("Test", vec![], 100.0);
@@ -1297,7 +1259,6 @@ mod tests3 {
     use super::*;
 
     #[test]
-    #[test]
     fn test_runtime_new() {
         let runtime = IntentionRuntime::new(500.0);
         assert!((runtime.global_budget - 500.0).abs() < 1e-9);
@@ -1306,7 +1267,6 @@ mod tests3 {
     }
 
     #[test]
-    #[test]
     fn test_runtime_register_agent() {
         let mut runtime = IntentionRuntime::new(500.0);
         runtime.register_agent(builder_agent());
@@ -1314,14 +1274,12 @@ mod tests3 {
     }
 
     #[test]
-    #[test]
     fn test_runtime_submit_intention() {
         let mut runtime = IntentionRuntime::new(500.0);
         runtime.submit(Intention::new("test", IntentionOrigin::System, 0.5, 0));
         assert_eq!(runtime.graph.intentions.len(), 1);
     }
 
-    #[test]
     #[test]
     fn test_runtime_tick_with_agents() {
         let mut runtime = IntentionRuntime::new(500.0);
@@ -1339,7 +1297,6 @@ mod tests3 {
     }
 
     #[test]
-    #[test]
     fn test_runtime_tick_no_agents() {
         let mut runtime = IntentionRuntime::new(500.0);
         let mut intention = Intention::new("test", IntentionOrigin::System, 0.5, 0);
@@ -1353,7 +1310,6 @@ mod tests3 {
     }
 
     #[test]
-    #[test]
     fn test_runtime_assign() {
         let mut runtime = IntentionRuntime::new(500.0);
         runtime.register_agent(builder_agent());
@@ -1362,7 +1318,6 @@ mod tests3 {
         assert!(!runtime.assign(&id, "NonExistent"));
     }
 
-    #[test]
     #[test]
     fn test_runtime_auto_assign() {
         let mut runtime = IntentionRuntime::new(500.0);
@@ -1378,7 +1333,6 @@ mod tests3 {
         assert_eq!(assignments[0].1, "Builder");
     }
 
-    #[test]
     #[test]
     fn test_runtime_status() {
         let mut runtime = IntentionRuntime::new(100.0);
@@ -1396,7 +1350,6 @@ mod tests3 {
     }
 
     #[test]
-    #[test]
     fn test_compile_build() {
         let agents = vec![builder_agent(), scout_agent(), scholar_agent()];
         let graph = IntentionCompiler::compile("build a cabin", &agents, 200.0, 0);
@@ -1411,7 +1364,6 @@ mod tests3 {
     }
 
     #[test]
-    #[test]
     fn test_compile_train() {
         let agents = vec![captain_agent(), scholar_agent()];
         let graph = IntentionCompiler::compile("train agent in combat", &agents, 200.0, 0);
@@ -1423,7 +1375,6 @@ mod tests3 {
         assert!(goals.iter().any(|g| g.contains("certify")));
     }
 
-    #[test]
     #[test]
     fn test_compile_conservation() {
         let agents = vec![scholar_agent(), scout_agent()];
@@ -1438,7 +1389,6 @@ mod tests3 {
     }
 
     #[test]
-    #[test]
     fn test_compile_explore() {
         let agents = vec![scout_agent()];
         let graph = IntentionCompiler::compile("explore the cave", &agents, 200.0, 0);
@@ -1451,14 +1401,12 @@ mod tests3 {
     }
 
     #[test]
-    #[test]
     fn test_compile_fallback() {
         let agents = vec![scholar_agent()];
         let graph = IntentionCompiler::compile("do something random", &agents, 100.0, 0);
         assert_eq!(graph.intentions.len(), 1);
     }
 
-    #[test]
     #[test]
     fn test_builder_agent() {
         let agent = builder_agent();
@@ -1468,7 +1416,6 @@ mod tests3 {
     }
 
     #[test]
-    #[test]
     fn test_scout_agent() {
         let agent = scout_agent();
         assert_eq!(agent.agent_id, "Scout");
@@ -1476,7 +1423,6 @@ mod tests3 {
         assert!((agent.energy_capacity - 60.0).abs() < 1e-9);
     }
 
-    #[test]
     #[test]
     fn test_scholar_agent() {
         let agent = scholar_agent();
@@ -1486,7 +1432,6 @@ mod tests3 {
     }
 
     #[test]
-    #[test]
     fn test_captain_agent() {
         let agent = captain_agent();
         assert_eq!(agent.agent_id, "Captain");
@@ -1494,7 +1439,6 @@ mod tests3 {
         assert!((agent.energy_capacity - 50.0).abs() < 1e-9);
     }
 
-    #[test]
     #[test]
     fn test_compile_to_execution_full_flow() {
         let mut runtime = IntentionRuntime::new(500.0);
@@ -1520,7 +1464,6 @@ mod tests3 {
     }
 
     #[test]
-    #[test]
     fn test_serde_intention() {
         let intention = Intention::new("test", IntentionOrigin::System, 0.5, 0);
         let json = serde_json::to_string(&intention).unwrap();
@@ -1529,7 +1472,6 @@ mod tests3 {
         assert_eq!(deserialized.priority, intention.priority);
     }
 
-    #[test]
     #[test]
     fn test_serde_intention_graph() {
         let mut graph = IntentionGraph::new(100.0);
@@ -1542,7 +1484,6 @@ mod tests3 {
     }
 
     #[test]
-    #[test]
     fn test_serde_agent_module() {
         let agent = builder_agent();
         let json = serde_json::to_string(&agent).unwrap();
@@ -1552,7 +1493,6 @@ mod tests3 {
     }
 
     #[test]
-    #[test]
     fn test_serde_execution_result() {
         let result = ExecutionResult::success(42.0);
         let json = serde_json::to_string(&result).unwrap();
@@ -1561,7 +1501,6 @@ mod tests3 {
         assert!((deserialized.energy_consumed - 42.0).abs() < 1e-9);
     }
 
-    #[test]
     #[test]
     fn test_serde_runtime() {
         let mut runtime = IntentionRuntime::new(500.0);
@@ -1578,7 +1517,6 @@ mod tests3 {
     }
 
     #[test]
-    #[test]
     fn test_serde_tick_result() {
         let result = TickResult {
             executed: vec![IntentionId::new("a")],
@@ -1593,7 +1531,6 @@ mod tests3 {
         assert!((deserialized.energy_consumed - 42.0).abs() < 1e-9);
     }
 
-    #[test]
     #[test]
     fn test_serde_runtime_status() {
         let status = RuntimeStatus {
