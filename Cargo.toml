@@ -2,6 +2,8 @@
 name = "lau-intention"
 version = "0.1.0"
 edition = "2021"
+license = "MIT"
+repository = "https://github.com/SuperInstance/lau-intention"
 description = "The Intention Runtime — PLATO's autograd for agent intentions"
 
 [dependencies]
